@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style.css">
+  <title><%= title %></title>
+</head>
+
+<body>
+  <div class="blog-container">
+
+    <div class="col1"> 
+      <header class="blog-header">
+        <h1 style=" font-family:papyrus;"><img 
+          class="header-image" 
+          src="/icons8-image-gallery-50.png" 
+          style="vertical-align: text-top; " 
+          width="40" height="40"/> PhotoAlbum
+        </h1>
+        <p class="header-subtext" ></p>
+      </header>  
+      
+      <div class="blog-sidebar">
+        <div class="sideitem-container">
+          
+          <div class="addphototab">
+            <div style="margin-bottom: 3px;">Photo Upload</div>
+            <form class="form" action="/upload", method="POST" enctype="multipart/form-data">
+                <input type="file" name="avatar" multiple> 
+                <button>Submit</button>                        
+            </form>   
+          </div> 
+    
+          <div class="deletephototab">
+            <button class="deletephotobtn">                 
+                <img 
+                class="trashcan" 
+                src="/icons8-müll-50.png" 
+                style="vertical-align:middle"
+                width="25" height="25"/> 
+                <span>Delete a Single Photo</span> 
+            </button>
+          </div>  
+
+          <div class="deletemanytab">
+            <button class="deletemanybtn" style="float: left;  margin-right: 5px;">                 
+                <img 
+                class="trashcan" 
+                src="/icons8-müll-50.png" 
+                style="vertical-align:middle"
+                width="25" height="25"/> 
+                <span>Delete Photos</span> 
+            </button>
+            <button class="deleteall" style="display:none; height: 30px;">Delete</button>
+          </div>  
+        </div>
+      </div>  
+    </div>
+
+    <div class="col2-details"> 
+      <h3 style="text-align:center; ">Slideshow Gallery: photo</h3>
+
+      <div class="largeimage">
+        <img src="">
+        <div class="photonumber" style="text-align:center">photo number: 1</div>
+      </div>
+              
+      <a class="prev">❮</a>
+      <a class="next">❯</a>
+      <hr>
+      
+      <div class="row">
+        <!-- <div class="column">
+          <img class="demo" src="">
+        </div> -->
+      </div>
+    </div>
+
+  </div>
+
+<script>
+
+let slideIndex = 1;
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  let i;
+  let slides = document.getElementsByClassName("largeimage");
+  let demos = document.getElementsByClassName("demo");
+
+  if (n > demos.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = demos.length}
+
+  for (i = 0; i < demos.length; i++) {
+    demos[i].className = demos[i].className.replace(" active", "");
+   }
+
+  demos[slideIndex-1].className += " active";
+
+  slides[0].innerHTML = `<img src="${demos[slideIndex-1].src}">
+  <div class="photonumber" style="text-align:center">photo number: ${slideIndex}</div>`
+}
+
+//  -------------------------------------------------------
+
+const loadImages = async() => {
+    const response = await fetch('http://localhost:3000/images')
+    .then( response => response.json() )
+    .then( response => {
+        const row = document.querySelector('.row');
+        const largeimage = document.querySelector('.largeimage');
+
+        row.innerHTML = '';
+        largeimage.innerHTML = '';
+
+        response.images.forEach((image, index) => {
+
+            row.innerHTML += `<div class="column"> 
+            <img class="demo" src="${image.filePath}">
+            <span class='deleteone' >double-click delete
+              <img src="icons8-müll.gif" style="vertical-align: middle; float:right" width="21" height="21">
+              </span> 
+              <span class='deletemany1' >
+              <img src="icons8-müll-50.png" width="50" height="auto">
+              </span> 
+              <span class='deletemany2' >
+              <b style="color:red; font-size:44px; font-family:Arial; text-align: center;">X</b>
+              </span> 
+            </div>`
+        })
+
+        if(response.images.length !== 0 ) {  
+            largeimage.innerHTML = `<img src="${response.images[0].filePath}">
+            <div class="photonumber"style="text-align:center">photo number: 1</div>`
+        }
+
+        const total = document.querySelector(".col2-details h3");
+        const slides = document.getElementsByClassName("column");
+        const demos = document.getElementsByClassName("demo");
+
+        if(response.images.length !== 0 ) { 
+            demos[0].className += " active"; 
+            total.innerHTML = `Slideshow Gallery: ${slides.length} photos`;
+        } else {
+            total.innerHTML = `Slideshow Gallery: 0 photos`;
+        }
+
+        let i;
+        for (i = 0; i < slides.length; i++) {
+            let number = i;
+            slides[i].onclick = function() {
+                currentSlide(number+1); 
+            }
+        }
+
+        const prev = document.getElementsByClassName("prev");
+        const next = document.getElementsByClassName("next");
+
+        prev[0].onclick = function() {
+          plusSlides(-1);
+        }
+        next[0].onclick = function() {
+          plusSlides(+1);
+        }
+
+        const deleteone = document.getElementsByClassName("deleteone");
+        const deletephototab = document.querySelector(".deletephototab");
+        const deletephotobtn = document.querySelector(".deletephotobtn span");
+
+        deletephototab.onclick = function() {
+          for (i = 0; i < deleteone.length; i++) {
+              if(deleteone[i].style.display == 'block') { 
+                  deleteone[i].style.display = 'none';
+                  deletephotobtn.innerHTML = 'Delete a Single Photo';
+              } else {
+                  deleteone[i].style.display = 'block';
+                  deletephotobtn.innerHTML = 'Stop Deleting Photo';
+              }
+          } 
+        }
+
+        for (i = 0; i < deleteone.length; i++) {
+            let number=i;
+            let endpoint = `/${response.images[i].filePath}`
+            deleteone[i].addEventListener("dblclick", (e) => {
+                console.log(endpoint)
+                fetch(endpoint, {
+                  method: "DELETE"
+                })
+                .then(responsed => responsed.json())
+                .then(data => {
+                    window.location.href = data.redirect;
+                    for (i = 0; i < deleteone.length; i++) {
+                        deleteone[i].style.display = 'block';
+                        deletephotobtn.innerHTML = 'Stop Deleting Photos';             
+                    }                   
+                })
+                .catch(err => console.log(err));
+            })         
+        }
+              
+        const deletemany1 = document.getElementsByClassName("deletemany1");
+        const deletemany2 = document.getElementsByClassName("deletemany2");
+
+        const deletemanytab = document.querySelector(".deletemanytab");
+        const deletemanybtnspan = document.querySelector(".deletemanybtn span")
+        const deletemanybtnimg = document.querySelector(".deletemanybtn img")
+        const deletemanybtn = document.querySelector(".deletemanybtn")
+
+        const deleteall = document.querySelector(".deleteall");
+
+        deletemanytab.onclick = function() {
+            for (i = 0; i < deletemany1.length; i++) {                
+                if(deletemany1[i].style.display == 'block' || deletemany2[i].style.display == 'block') { 
+                    deleteall.style.display = 'none';
+                    deletemany1[i].style.display = 'none';
+                    deletemany2[i].style.display = 'none';
+                    deletemanybtn.innerHTML = `<img 
+                                              class="trashcan" 
+                                              src="/icons8-müll-50.png" 
+                                              style="vertical-align:middle"
+                                              width="25" height="25"/> 
+                                              <span>Delete Photos</span>`;
+                } else {
+                    deleteall.style.display = 'block';
+                    deletemany1[i].style.display = 'block';
+                    deletemany2[i].style.display = 'none';
+                    deletemanybtn.innerHTML = `<img 
+                                              class="trashcan" 
+                                              src="/icons8-müll-50.png" 
+                                              style="vertical-align:middle"
+                                              width="25" height="25"/> 
+                                              <span>Stop Deleting Photos</span>`;
+                }
+            } 
+        }
+
+        const photoselection = [];
+        for (i = 0; i < deletemany1.length; i++) {
+            let photodeletepath = `${response.images[i].filePath}`
+            deletemany1[i].onclick = function() {
+                this.style.display = 'none';
+                // console.log(this.parentElement.childNodes)
+                this.parentElement.childNodes[7].style.display = 'block';
+                // photodeletepath = photodeletepath.substring(1);
+                photoselection.push(photodeletepath); 
+            }  
+                  
+            deletemany2[i].onclick = function() {
+                this.parentElement.childNodes[5].style.display = 'block';
+                this.style.display = 'none';
+                // photodeletepath = photodeletepath.substring(1);
+                photoselection.splice(photoselection.indexOf(photodeletepath), 1);
+            }  
+        }
+
+        let endpoint = `/images`
+        deleteall.addEventListener("click", (e) => {
+            fetch(endpoint, {
+                method: "DELETE",
+                body: JSON.stringify(photoselection),
+                headers: {"Content-Type": "application/json"}
+            })
+            .then(responsed => responsed.json())
+            .then(data => {
+                window.location.href = data.redirect;        
+            })
+            .catch(err => console.log(err));
+        }) 
+
+    })
+    .catch(err => console.log(err));
+};
+window.onload = loadImages;
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "name": "photo_upload_album",
+  "version": "1.0.0",
+  "description": "* _html_\r * _css_\r * _javascript_\r * _node.js_\r * _express_\r * _mongoose_\r * _ejs_\r * _multer_\r * _uuid_",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mahashi-github",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "mongoose": "^6.7.3",
+    "multer": "^1.4.5-lts.1",
+    "uuid": "^9.0.0"
+  }
+}

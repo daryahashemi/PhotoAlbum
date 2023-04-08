@@ -1,0 +1,233 @@
+:root {
+	--dark-color-a: rgb(60, 100, 100);
+	--dark-color-b: rgb(92, 132, 132);
+	--backpost-color: rgb(255, 237, 180);
+	--post-color: rgb(255, 243, 204);
+	--light-backcolor: #f0f0f0;
+}
+
+a {
+	text-decoration: none;
+	color: inherit; 
+}
+
+body {
+	font-family: cursive, serif;
+	font-size: 16px;
+	background: var(--light-backcolor);
+}
+
+/* Header ***********/
+
+.blog-container {
+	max-width: 1100px;
+	background: #fff;
+	margin: 30px auto;
+	overflow: hidden;
+	display: grid;
+	grid-template-columns: 1fr 2.7fr;
+	background-color:var(--backpost-color);
+}
+
+.blog-header {
+	background: var(--dark-color-a);
+	color: #fff;
+	border-top-left-radius: 5px;
+	padding: 5px;
+}
+
+.blog-header h1{
+	padding-left: 15px;
+}
+
+.header-subtext {
+	margin-left: 50px;
+	margin-top: -20px;
+}
+
+/* Sidebar ***********/
+
+.blog-sidebar {
+	background: var(--dark-color-b);
+	color: #fff;
+	height: 450px;
+	padding-top: 7px;
+}
+
+.sideitem-container {
+	margin: 20px;
+	margin-left: 40px;
+}
+
+.form {
+	margin-bottom: 20px;
+}
+
+.form input[type="file"]{
+	border: 1px solid #ccc;
+	display: block;
+	width: 200px;
+	float: left;
+}
+
+.deletephototab {
+	margin-bottom: 20px;
+}
+
+.deletemanybtn {
+	margin-bottom: 2px;	
+}
+
+.allalbums {
+	cursor: pointer;
+	display: inline-block;
+	padding: 10px; 
+	padding-right: 20px;
+	background:  rgb(70, 114, 114);
+	color: #fff;
+	box-shadow: 1px 2px 3px rgba(0,0,0,0.2);
+	margin-right: 10px;
+	border-width: 1px;
+	border-color: var(--dark-color-a);
+	border-radius: 5px;
+	margin-top: 20px;
+}
+
+.allalbums:active {
+	transform: translateY(1px);
+}
+
+.allalbums:hover  {
+	background:  var(--dark-color-a);
+}
+
+/* Body ***********/
+
+.col2-details {
+	padding: 0px 40px;
+	height: 540px;
+	overflow-y: scroll;
+}
+
+.col2-details h2 {
+	margin-bottom: 0px;
+}
+
+.largeimage img {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	height:300px
+}
+  
+.prev, .next {
+	cursor: pointer;
+	color: rgb(106, 104, 104);
+	font-weight: bold;
+	font-size: 20px;
+	user-select: none;
+	-webkit-user-select: none;
+}
+  
+.next {
+	margin-left: 660px;
+}  
+
+.prev:hover,
+.next:hover {
+	color:red
+}
+
+.photonumber {
+	color: rgb(106, 104, 104);
+	font-size: 15px;
+	padding: 8px 12px;
+}
+  
+.row:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+.column {
+	position: relative;
+	border-color: darkgray;
+	float: left;
+}
+
+.column .demo{
+	height: 150px;
+	opacity: 0.6;
+	cursor: pointer;
+	object-fit: cover;
+	border-style: solid;
+	border-width: 1px;
+}  
+  
+.demo.active,
+.column .demo:hover {
+	opacity: 1;
+}
+
+.deleteone {
+	bottom: 0;
+	position: absolute;
+	display: none;
+	left: 0;
+	margin-bottom: 20px;
+
+	background-color:rgba(255, 255, 255, 0.6);
+	width: 100%;
+	border-color: darkgray;
+	-webkit-user-select: none; /* Safari */
+	-ms-user-select: none; /* IE 10 and IE 11 */
+	user-select: none; /* Standard syntax */
+} 
+
+.deletemany1 {
+	position: absolute;
+	display: none;
+	bottom: 10px;
+	right: 10%; 
+	left: auto;
+	background-color:rgba(0, 0, 0, 0.8);
+	width: 80%;
+	border-radius: 10%;
+	opacity: 0.8; 
+	-webkit-user-select: none; 
+	-ms-user-select: none; 
+	user-select: none; 
+}
+
+.deletemany1 img{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.deletemany2 {
+	position: absolute;
+	display: none;
+	bottom: 10px;
+	right: 10%; 
+	left: auto;
+	background-color:rgba(0, 0, 0, 0.8);
+	width: 80%;
+	border-radius: 10%;
+	opacity: 0.8; 
+	-webkit-user-select: none; 
+	-ms-user-select: none; 
+	user-select: none; 
+}
+
+.deletemany2 b{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.not-found {
+	margin-top: 40px;
+	margin-left: 40px;
+}  
